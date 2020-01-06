@@ -1,0 +1,12 @@
+[submodule "xmonad-git"]
+	path = xmonad-git
+	url = git@github.com:bbarker/xmonad.git
+	branch = brandon
+[submodule "xmonad-contrib-git"]
+	path = xmonad-contrib-git
+	url = git@github.com:bbarker/xmonad-contrib.git
+	branch = brandon
+[submodule "xmobar-git"]
+	path = xmobar-git
+	url = git@github.com:bbarker/xmobar.git
+	branch = brandon

@@ -1,0 +1,12 @@
+xmonad-x86_64-linux
+xmonad.errors
+xmonad.hi
+
+*.o
+*~
+
+xmonad.state
+.stack-work
+xmobar-git
+xmonad-contrib-git
+xmonad-git
