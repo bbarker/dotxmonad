@@ -7,7 +7,4 @@ xmonad.hi
 
 xmonad.state
 .stack-work
-xmobar-git
-xmonad-contrib-git
-xmonad-git
 build
