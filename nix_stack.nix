@@ -7,6 +7,7 @@ pkgs.haskell.lib.buildStackProject {
     alsaLib
     git git-lfs
     gmp
+    haskellPackages.yeganesh
     openssl
     wirelesstools
     xorg.libX11 xorg.libXext xorg.libXft xorg.libXpm xorg.libXrandr xorg.libXScrnSaver
