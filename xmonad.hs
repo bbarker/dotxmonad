@@ -2,11 +2,11 @@ import Control.Concurrent (threadDelay)
 import System.Directory (getHomeDirectory)
 import System.IO
 import XMonad
+import XMonad.Actions.WindowBringer
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
-import XMonad.Util.Run (spawnPipe)
--- import XMonad.Hooks.DynamicLog (xmobar)
 import XMonad.Util.EZConfig (additionalKeys)
+import XMonad.Util.Run (spawnPipe)
 
 main :: IO ()
 main = do
@@ -35,8 +35,10 @@ myConfig = def {
 
 myKeys :: [((KeyMask, KeySym), X ())]
 myKeys = [
-   ((modMask myConfig, xK_p ), spawn  "$(yeganesh -x)")
--- , ((modMask myConfig, xK_enter ), spawn  "$(xfce4-terminal)")
- ]
+    ((modMask myConfig, xK_p), spawn  "$(yeganesh -x)")
+  , ((modMask myConfig, xK_KP_Enter), spawn  "$(xfce4-terminal)")
+  , ((modMask myConfig, xK_g), gotoMenu)
+  , ((modMask myConfig, xK_b), bringMenu)
+  ]
 
 myConfig' = myConfig `additionalKeys` myKeys
