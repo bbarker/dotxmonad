@@ -29,14 +29,14 @@ myConfig = def {
     manageHook = manageDocks <+> manageHook def
   , layoutHook = avoidStruts  $  layoutHook def
    -- this must be in this order, docksEventHook must be last:
-  -- , handleEventHook    = handleEventHook defaultConfig <+> docksEventHook
+  , handleEventHook    = handleEventHook defaultConfig <+> docksEventHook
   , modMask = mod4Mask -- Use Super instead of Alt
+  , terminal = "xfce4-terminal" -- TODO: add a static priority list
   }
 
 myKeys :: [((KeyMask, KeySym), X ())]
 myKeys = [
     ((modMask myConfig, xK_p), spawn  "$(yeganesh -x)")
-  , ((modMask myConfig, xK_KP_Enter), spawn  "$(xfce4-terminal)")
   , ((modMask myConfig, xK_g), gotoMenu)
   , ((modMask myConfig, xK_b), bringMenu)
   ]
