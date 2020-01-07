@@ -24,6 +24,7 @@ Install some deps:
 - `libiw-dev`
 - `libxpm-dev`
 - `libasound2-dev`
+- `xscreensaver`
 - `yeganesh` (`stack install yeganesh`)
 
 In this repo's directory, use the right build script:

@@ -11,12 +11,13 @@ import XMonad.Util.Run (spawnPipe)
 main :: IO ()
 main = do
   -- Kill processes started in prior session
-  _ <- spawnPipe "pkill -9 xmobar"
+  _ <- spawnPipe "pkill -9 xmobar xscreensaver"
   _ <- threadDelay 10000
 
   home <- getHomeDirectory
   let xmobarBin = home <> "/.local/bin/xmobar"
   let xmobarRc = home <> "/.xmonad/xmobarrc"
+  _ <- spawnPipe $ "xscreensaver"
   xmproc <- spawnPipe $ xmobarBin <> " " <> xmobarRc
   xmonad myConfig' {
     logHook = dynamicLogWithPP xmobarPP {
@@ -36,9 +37,10 @@ myConfig = def {
 
 myKeys :: [((KeyMask, KeySym), X ())]
 myKeys = [
-    ((modMask myConfig, xK_p), spawn  "$(yeganesh -x)")
+    ((modMask myConfig, xK_b), bringMenu)
   , ((modMask myConfig, xK_g), gotoMenu)
-  , ((modMask myConfig, xK_b), bringMenu)
+  , ((modMask myConfig, xK_p), spawn  "$(yeganesh -x)")
+  , ((mod4Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
   ]
 
 myConfig' = myConfig `additionalKeys` myKeys

@@ -11,6 +11,7 @@ pkgs.haskell.lib.buildStackProject {
     openssl
     wirelesstools
     xorg.libX11 xorg.libXext xorg.libXft xorg.libXpm xorg.libXrandr xorg.libXScrnSaver
+    xscreensaver
     zlib
   ];
   LANG = "en_US.UTF-8";
