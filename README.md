@@ -16,8 +16,8 @@ ln -s ~/workspace/dotxmonad .xmonad
 ```
 
 ### General notes
-
-When running any variation of `stack build` below, if a failure occurs,
+1. You may wish to install your distribution's XMonad package on whatever system to help bootstrap `xmonad --recompile`, as well as possibly assisting in getting the login manager's config aware of XMonad, though admittedly this is a heavy-weight option.
+2. When running any variation of `stack build` below, if a failure occurs,
 sometimes it helps to keep running the command over until the failure
 becomes idempotent; often some more dependencies will install in subsequent
 iterations, and the error will become more clear once idempotent (e.g. 
@@ -28,7 +28,7 @@ narrowing down a missing system dependency).
 Install some deps:
 
 - [stack](https://docs.haskellstack.org/en/stable/install_and_upgrade/)
-- apt deps: `sudo apt install dmenu libiw-dev libxpm-dev libasound2-dev xscreensaver`
+- apt deps (potentially incomplete): `sudo apt install dmenu libiw-dev libxpm-dev libasound2-dev libxft-dev libxinerama-dev libxrandr-dev libxss-devxscreensaver`
 - `yeganesh` (`stack install yeganesh`)
 
 In this repo's directory, use the right build script:
