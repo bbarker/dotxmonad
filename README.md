@@ -16,8 +16,7 @@ ln -s ~/workspace/dotxmonad .xmonad
 ```
 
 ### General notes
-1. You may wish to install your distribution's XMonad package on whatever system to help bootstrap `xmonad --recompile`, as well as possibly assisting in getting the login manager's config aware of XMonad, though admittedly this is a heavy-weight option.
-2. When running any variation of `stack build` below, if a failure occurs,
+1. When running any variation of `stack build` below, if a failure occurs,
 sometimes it helps to keep running the command over until the failure
 becomes idempotent; often some more dependencies will install in subsequent
 iterations, and the error will become more clear once idempotent (e.g. 
@@ -38,7 +37,7 @@ Now build all the dependencies:
 
 ```
 stack build
-cd xmobar-git && stack install
+stack install
 ```
 
 And finally:
