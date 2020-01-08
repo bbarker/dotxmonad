@@ -15,16 +15,20 @@ Link `$HOME/.xmonad` to this repo:
 ln -s ~/workspace/dotxmonad .xmonad
 ```
 
+### General notes
+
+When running any variation of `stack build` below, if a failure occurs,
+sometimes it helps to keep running the command over until the failure
+becomes idempotent; often some more dependencies will install in subsequent
+iterations, and the error will become more clear once idempotent (e.g. 
+narrowing down a missing system dependency).
+
 ### Ubuntu
 
 Install some deps:
 
 - [stack](https://docs.haskellstack.org/en/stable/install_and_upgrade/)
-- `dmenu`
-- `libiw-dev`
-- `libxpm-dev`
-- `libasound2-dev`
-- `xscreensaver`
+- apt deps: `sudo apt install dmenu libiw-dev libxpm-dev libasound2-dev xscreensaver`
 - `yeganesh` (`stack install yeganesh`)
 
 In this repo's directory, use the right build script:
