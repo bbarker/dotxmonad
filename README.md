@@ -33,6 +33,22 @@ Install some deps:
 In this repo's directory, use the right build script:
 `ln -s build_stack.sh build`.
 
+You may need to get a shell without a Nix environment to proceed, assuming you
+have Nix installed for this user. We suggest adding a conditional around
+the appropriate sections of `~/.bashrc` and/or `~/.profile`, e.g.:
+
+```bash
+if [ -z ${NO_NIX} ]; then
+    source /home/brandon/.nix-profile/etc/profile.d/nix.sh
+fi
+```
+
+Now you can get the environment to build in:
+
+```
+env -i HOME="$HOME" USER="$USER" NO_NIX=1 bash -l
+```
+
 Now build all the dependencies:
 
 ```
