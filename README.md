@@ -27,7 +27,7 @@ narrowing down a missing system dependency).
 Install some deps:
 
 - [stack](https://docs.haskellstack.org/en/stable/install_and_upgrade/)
-- apt deps (potentially incomplete): `sudo apt install dmenu libiw-dev libxpm-dev libasound2-dev libxft-dev libxinerama-dev libxrandr-dev libxss-devxscreensaver`
+- apt deps (potentially incomplete): `sudo apt install dmenu xscreensaver x11proto-scrnsaver-dev libiw-dev libxpm-dev libasound2-dev libxft-dev libxinerama-dev libxrandr-dev`
 - `yeganesh` (`stack install yeganesh`)
 
 In this repo's directory, use the right build script:
