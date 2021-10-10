@@ -14,6 +14,9 @@ main = do
   _ <- spawnPipe "pkill -9 xmobar xscreensaver"
   _ <- threadDelay 10000
 
+  -- TODO: make this conditional on detection of nvidia-settings on PATH:
+  _ <- spawnPipe "nvidia-settings --load-config-only"
+
   home <- getHomeDirectory
   let xmobarBin = home <> "/.local/bin/xmobar"
   let xmobarRc = home <> "/.xmonad/xmobarrc"
