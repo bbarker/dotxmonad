@@ -1,4 +1,3 @@
-
 ## Building
 
 After cloning, initialize submodules:
@@ -18,16 +17,22 @@ ln -s ~/workspace/dotxmonad .xmonad
 ### General notes
 1. When running any variation of `stack build` below, if a failure occurs,
 sometimes it helps to keep running the command over until the failure
-becomes idempotent; often some more dependencies will install in subsequent
+becomes goes away; often some more dependencies will install in subsequent
 iterations, and the error will become more clear once idempotent (e.g. 
 narrowing down a missing system dependency).
 
 ### Ubuntu
 
+`LANG` should be set as follows:
+
+```
+export LANG=C.UTF-8
+```
+
 Install some deps:
 
 - [stack](https://docs.haskellstack.org/en/stable/install_and_upgrade/)
-- apt deps (potentially incomplete): `sudo apt install dmenu xscreensaver x11proto-scrnsaver-dev libiw-dev libxpm-dev libasound2-dev libxft-dev libxinerama-dev libxrandr-dev`
+- apt deps (potentially incomplete): `sudo apt install dmenu xscreensaver x11proto-scrnsaver-dev libiw-dev libxpm-dev libasound2-dev libxft-dev libxinerama-dev libxrandr-dev libgmp-dev libxss-dev libpango1.0-dev`
 - `yeganesh` (`stack install yeganesh`)
 
 In this repo's directory, use the right build script:
@@ -91,3 +96,28 @@ And finally:
 xmonad --recompile && xmonad --restart
 ```
 
+
+
+## Updating xmonad, xmobar, etc.
+
+```
+cd xmobar-git
+git remote add upstream https://codeberg.org/xmobar/xmobar.git # only once
+git checkout master && git pull upstream master && git push
+cd ..
+
+cd xmonad-git
+git remote add upstream https://github.com/xmonad/xmonad.git
+git checkout master && git pull upstream master && git push
+cd ..
+
+cd xmonad-contrib-git
+git remote add upstream https://github.com/xmonad/xmonad-contrib.git
+git checkout master && git pull upstream master && git push
+cd ..
+
+git submodule foreach 'git pull origin $(git rev-parse --abbrev-ref HEAD)'
+git update-index
+```
+
+After updating and testing, don't forget to commit and push!

@@ -29,13 +29,13 @@ main = do
     }
   }
 
-myConfig = def {
+myConfig = docks $ def {
     manageHook = manageDocks <+> manageHook def
   , layoutHook = avoidStruts  $  layoutHook def
    -- this must be in this order, docksEventHook must be last:
-  , handleEventHook    = handleEventHook defaultConfig <+> docksEventHook
+  , handleEventHook    = handleEventHook def -- <+> docksEventHook
   , modMask = mod4Mask -- Use Super instead of Alt
-  , terminal = "xfce4-terminal" -- TODO: add a static priority list
+  , terminal = "alacritty" -- "xfce4-terminal" -- TODO: add a static priority list
   }
 
 myKeys :: [((KeyMask, KeySym), X ())]

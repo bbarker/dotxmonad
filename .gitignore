@@ -8,3 +8,5 @@ xmonad.hi
 xmonad.state
 .stack-work
 build
+build-*linux*
+
