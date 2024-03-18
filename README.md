@@ -32,13 +32,14 @@ export LANG=C.UTF-8
 Install some deps:
 
 - [stack](https://docs.haskellstack.org/en/stable/install_and_upgrade/)
-- apt deps (potentially incomplete): `sudo apt install dmenu xscreensaver x11proto-scrnsaver-dev libiw-dev libxpm-dev libasound2-dev libxft-dev libxinerama-dev libxrandr-dev libgmp-dev libxss-dev libpango1.0-dev`
+- apt deps (potentially incomplete): `sudo apt install dmenu xscreensaver x11proto-scrnsaver-dev libiw-dev libxpm-dev libasound2-dev libxft-dev libxinerama-dev libxrandr-dev libgmp-dev libxss-dev libpango1.0-dev dbus-x11`
 - `yeganesh` (`stack install yeganesh`)
 
 In this repo's directory, use the right build script:
 `ln -s build_stack.sh build`.
 
-You may need to get a shell without a Nix environment to proceed, assuming you
+You *may* need to get a shell without a Nix environment to proceed (though in
+a more recent Nix install this wasn't necessary), assuming you
 have Nix installed for this user. We suggest adding a conditional around
 the appropriate sections of `~/.bashrc` and/or `~/.profile`, e.g.:
 
@@ -65,6 +66,13 @@ And finally:
 
 ```
 xmonad --recompile && xmonad --restart
+```
+
+Some applications may require D-BUS environment variables set, so add
+this to your `.bashrc`:
+
+```
+export $(dbus-launch)
 ```
 
 ### Nix
