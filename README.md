@@ -62,11 +62,6 @@ stack build
 stack install
 ```
 
-And finally:
-
-```
-xmonad --recompile && xmonad --restart
-```
 
 Some applications may require D-BUS environment variables set, so add
 this to your `.bashrc`:
@@ -98,11 +93,20 @@ nix-shell -p haskellPackages.xmonad
 unset STACK_IN_NIX_SHELL
 ```
 
+## All Systems - Finishing Touches
+
+
+```
+ln -s $(pwd)xmobarrc ~/.xmobarrc
+```
+
 And finally:
 
 ```
 xmonad --recompile && xmonad --restart
 ```
+
+
 
 
 
