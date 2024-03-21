@@ -7,6 +7,7 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Util.EZConfig (additionalKeys)
 import XMonad.Util.Run (spawnPipe)
+import qualified XMonad.StackSet as W
 
 main :: IO ()
 main = do
@@ -29,14 +30,33 @@ main = do
     }
   }
 
+myModMask = mod4Mask -- Use Super instead of Alt
+
 myConfig = docks $ def {
     manageHook = manageDocks <+> manageHook def
   , layoutHook = avoidStruts  $  layoutHook def
-   -- this must be in this order, docksEventHook must be last:
-  , handleEventHook    = handleEventHook def -- <+> docksEventHook
-  , modMask = mod4Mask -- Use Super instead of Alt
+  , handleEventHook    = handleEventHook def
+  , modMask = mod4Mask
   , terminal = "alacritty" -- "xfce4-terminal" -- TODO: add a static priority list
+  , workspaces = myWorkspaces
   }
+myConfig' = myConfig `additionalKeys` myKeys
+
+myExtraWorkspaces = [
+                    (xK_0, "10💼")
+                  , (xK_1, "11🌐🌐")
+                  , (xK_2, "12🌐📝")
+                  , (xK_3, "13📝")
+                  , (xK_4, "14📖")
+                  , (xK_5, "15📖🖋️")
+                  , (xK_6, "16☯")
+                  , (xK_7, "17🎮")
+                  , (xK_8, "18🖥️")
+                  , (xK_9, "19[tmp]")
+                  ]
+myWorkspaces = [
+               "1☺♫","2💬","3✉","4🌐🦀","5✏️🦀","6🌐🦀","7✏️🦀","8🌐𝕊","9✏️𝕊"
+            ] ++ (map snd myExtraWorkspaces)
 
 myKeys :: [((KeyMask, KeySym), X ())]
 myKeys = [
@@ -44,6 +64,11 @@ myKeys = [
   , ((modMask myConfig, xK_g), gotoMenu)
   , ((modMask myConfig, xK_p), spawn  "$(yeganesh -x)")
   , ((mod4Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
+  ] ++ [
+    ((myModMask .|. controlMask, key), (windows $ W.greedyView ws))
+      | (key,ws) <- myExtraWorkspaces
+  ] ++ [
+    ((myModMask .|. controlMask .|. shiftMask, key), (windows $ W.shift ws))
+      | (key,ws) <- myExtraWorkspaces
   ]
 
-myConfig' = myConfig `additionalKeys` myKeys
