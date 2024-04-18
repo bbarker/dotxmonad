@@ -103,9 +103,12 @@ ln -s $(pwd)xmobarrc ~/.xmobarrc
 And finally:
 
 ```
-xmonad --recompile && xmonad --restart
+xmonad --recompile && xmonad --test && xmonad --restart
 ```
 
+Note that `--test` doesn't really do anything, but it doesn't restart
+the existing xmonad process so it should be a good way to test some
+runtime issues (it will just return a 'user error').
 
 
 
