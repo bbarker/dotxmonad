@@ -13,11 +13,14 @@ import XMonad.Util.EZConfig (additionalKeys)
 import XMonad.Util.Run (spawnPipe)
 import qualified XMonad.StackSet as W
 
+debugLogOn :: Bool
+debugLogOn = False
+
 main :: IO ()
 main = do
   home <- getHomeDirectory
   logFile <- getLogFile
-  _ <- writeFile logFile ""
+  _ <- when debugLogOn $ writeFile logFile ""
   -- Kill processes started in prior session
   _ <- spawnPipe "pkill -9 -f 'xmobar|xscreensaver'"
   _ <- threadDelay 10000
@@ -26,6 +29,8 @@ main = do
   _ <- spawnPipe "nvidia-settings --load-config-only"
 
   -- TODO: probably want to check the specific ssh-agent
+  -- TODO: not sure why, but it seems we may have to restart xmonad twice
+  --     : for it to pick up a new ssh-agent process
   _ <- spawnPipe $ "if ! pgrep -u $USER ssh-agent > /dev/null; then ssh-agent > ~/.ssh/agent-env; fi"
   _ <- threadDelay 10000
   loadSshAgentEnv $ home <> "/.ssh/agent-env"
@@ -95,9 +100,8 @@ getLogFile = do
   home <- getHomeDirectory 
   pure $ home <> "/xmonad_debug.log" 
 
--- Helper function to append a debug message to a log file
 appendLog :: String -> IO ()
-appendLog msg = do
+appendLog msg = when debugLogOn $ do
   logFile <- getLogFile
   appendFile logFile (msg ++ "\n")
 
@@ -114,12 +118,4 @@ loadSshAgentEnv filePath = do
                 appendLog $ "Setting " ++ var ++ " to " ++ value
                 setEnv var value
             )    
-            
--- loadSshAgentEnv :: FilePath -> IO ()
--- loadSshAgentEnv filePath = do
---     fileExists <- doesFileExist filePath
---     when fileExists $ do
---         content <- withFile filePath ReadMode hGetContents
---         let envVars = catMaybes . map parseEnvVarLine . lines $ content
---         forM_ envVars $ \(var, value) ->
---             setEnv var value
+           
