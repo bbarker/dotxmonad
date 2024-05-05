@@ -1,5 +1,9 @@
 import Control.Concurrent (threadDelay)
-import System.Directory (getHomeDirectory)
+import Control.Monad (when, forM_)
+import Data.List (isPrefixOf, stripPrefix)
+import Data.Maybe (catMaybes, fromMaybe)
+import System.Directory (getHomeDirectory, doesFileExist)
+import System.Environment (getEnv, setEnv)
 import System.IO
 import XMonad
 import XMonad.Actions.WindowBringer
@@ -9,16 +13,29 @@ import XMonad.Util.EZConfig (additionalKeys)
 import XMonad.Util.Run (spawnPipe)
 import qualified XMonad.StackSet as W
 
+debugLogOn :: Bool
+debugLogOn = False
+
 main :: IO ()
 main = do
+  home <- getHomeDirectory
+  logFile <- getLogFile
+  _ <- when debugLogOn $ writeFile logFile ""
   -- Kill processes started in prior session
-  _ <- spawnPipe "pkill -9 xmobar xscreensaver"
+  _ <- spawnPipe "pkill -9 -f 'xmobar|xscreensaver'"
   _ <- threadDelay 10000
 
   -- TODO: make this conditional on detection of nvidia-settings on PATH:
   _ <- spawnPipe "nvidia-settings --load-config-only"
 
-  home <- getHomeDirectory
+  -- TODO: probably want to check the specific ssh-agent
+  -- TODO: not sure why, but it seems we may have to restart xmonad twice
+  --     : for it to pick up a new ssh-agent process
+  _ <- spawnPipe $ "if ! pgrep -u $USER ssh-agent > /dev/null; then ssh-agent > ~/.ssh/agent-env; fi"
+  _ <- threadDelay 10000
+  loadSshAgentEnv $ home <> "/.ssh/agent-env"
+  sshAgentPid <- getEnv "SSH_AGENT_PID"
+  appendLog $ "getEnv  SSH_AGENT_PID: " ++ sshAgentPid
   let xmobarBin = home <> "/.local/bin/xmobar"
   let xmobarRc = home <> "/.xmonad/xmobarrc"
   _ <- spawnPipe $ "xscreensaver"
@@ -72,3 +89,33 @@ myKeys = [
       | (key,ws) <- myExtraWorkspaces
   ]
 
+-- Parses a line into a variable name and value, trimming a trailing semicolon if present
+parseEnvVarLine :: String -> Maybe (String, String)
+parseEnvVarLine line = case span (/= '=') line of
+    (var, '=':value) -> Just (var, takeWhile (/= ';') value)
+    _ -> Nothing
+
+getLogFile :: IO String
+getLogFile = do
+  home <- getHomeDirectory 
+  pure $ home <> "/xmonad_debug.log" 
+
+appendLog :: String -> IO ()
+appendLog msg = when debugLogOn $ do
+  logFile <- getLogFile
+  appendFile logFile (msg ++ "\n")
+
+loadSshAgentEnv :: FilePath -> IO ()
+loadSshAgentEnv filePath = do
+    fileExists <- doesFileExist filePath
+    appendLog $ "File " ++ filePath ++ " exits?: " ++ show fileExists
+    when fileExists $ do
+        withFile filePath ReadMode (\handle -> do
+            lazyContent <- hGetContents handle
+            let envVars = catMaybes . map parseEnvVarLine . lines $ lazyContent
+            appendLog $ "Num vars: " ++ show (length envVars)
+            forM_ envVars $ \(var, value) -> do
+                appendLog $ "Setting " ++ var ++ " to " ++ value
+                setEnv var value
+            )    
+           
