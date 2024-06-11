@@ -78,11 +78,23 @@ In this repo's directory, use the right build script:
 Run the following commands to get a working shell for the build:
 
 
+```
+nix-shell nix_stack.nix
+```
+
 Now build all the dependencies:
 
 ```
+stack --nix update # if needed or desired
 stack --nix build
 cd xmobar-git && stack install
+```
+
+Rather than starting a new shell every time, if the build
+has a temporary failure, you can run:
+
+```
+stack --nix build --nix-shell-file nix_stack.nix  
 ```
 
 #### Untested:
